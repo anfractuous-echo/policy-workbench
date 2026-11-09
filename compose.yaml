@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:${PORT:-8094}:8094"
+    volumes:
+      - workbench-data:/data
+
+volumes:
+  workbench-data:

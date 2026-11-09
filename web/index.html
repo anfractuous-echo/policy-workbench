@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Policy Workbench</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Policy Workbench home"
+        ><span class="brand-mark">p<span>.</span></span
+        ><span>policy<br /><strong>workbench</strong></span></a
+      >
+      <div class="workspace-label">WORKSPACE</div>
+      <label class="sr-only" for="profile">Profile</label>
+      <select id="profile" class="profile-select">
+        <option value="treasury">Northstar Treasury</option>
+        <option value="studio">Studio Sandbox</option>
+      </select>
+      <nav aria-label="Main navigation">
+        <button class="nav-item selected" data-view="wallets">
+          <span class="nav-icon" aria-hidden="true">▤</span>Wallets<span
+            class="nav-count"
+            id="wallet-count"
+            >0</span
+          >
+        </button>
+        <button class="nav-item" data-view="policies">
+          <span class="nav-icon" aria-hidden="true">▤</span>Policies<span
+            id="policy-count"
+            class="nav-count"
+            >…</span
+          >
+        </button>
+        <button class="nav-item" data-view="transfers">
+          <span class="nav-icon" aria-hidden="true">⇄</span>Transfers<span
+            id="transfer-count"
+            class="nav-count"
+            >…</span
+          >
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="/brief" target="_blank" rel="noopener"
+          >Interview brief <span>↗</span></a
+        >
+        <button id="catalog-button">Explore demo data <span>↗</span></button>
+        <div class="local-note">
+          <span class="dot"></span> Local simulation<br /><small
+            >Synthetic data. No real funds.</small
+          >
+        </div>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <span class="breadcrumb">Workspace</span><span class="slash">/</span
+          ><span id="breadcrumb-current">Policies</span>
+        </div>
+        <span class="sandbox-badge">SANDBOX</span>
+      </header>
+      <main>
+        <section class="clock-bar" aria-label="Simulation clock">
+          <div>
+            <span class="clock-icon">◷</span
+            ><span class="clock-label">Simulation time</span
+            ><time id="clock">Loading…</time><span class="timezone">UTC</span>
+          </div>
+          <div class="clock-actions">
+            <button class="button subtle small" data-hours="1">+1 hour</button
+            ><button class="button subtle small" data-hours="24">+1 day</button
+            ><button class="button subtle small" id="reset-button">
+              Reset demo
+            </button>
+          </div>
+        </section>
+        <div id="loading" class="loading">Loading workspace…</div>
+        <section id="wallets-view" class="view" hidden>
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">WALLET OVERVIEW</div>
+              <h1>Wallets</h1>
+              <p>Your wallets and available funds.</p>
+            </div>
+          </div>
+          <div class="section-note">
+            <span class="info-icon">i</span
+            ><span
+              >Each wallet uses USD or EUR. Pending and sent transfers reserve
+              funds until they finish.</span
+            >
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <h2>Wallet balances</h2>
+              <span>Synthetic demo funds</span>
+            </div>
+            <div id="wallets-list"></div>
+          </div>
+          <p class="footnote">
+            Balance excludes confirmed payments. Available balance also excludes
+            funds reserved by pending transfers.
+          </p>
+        </section>
+        <section id="policies-view" class="view" hidden>
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">TRANSFER CONTROLS</div>
+              <h1>Policies</h1>
+              <p>Set the rules for how money moves.</p>
+            </div>
+            <button class="button primary" id="new-policy">
+              <span aria-hidden="true">+</span> Create policy
+            </button>
+          </div>
+          <div class="section-note">
+            <span class="info-icon">i</span
+            ><span
+              >Rules run from top to bottom. The first matching policy decides
+              the outcome.</span
+            >
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <h2>Evaluation order <span id="active-count"></span></h2>
+              <span>Top priority first</span>
+            </div>
+            <div id="policies-list"></div>
+          </div>
+          <p class="footnote">
+            Amount less than checks a single transfer. Equality is included. An
+            empty amount matches any amount.
+          </p>
+        </section>
+        <section id="transfers-view" class="view" hidden>
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">TRANSFER SIMULATION</div>
+              <h1>Transfers</h1>
+              <p>Create a request and follow the policy decision.</p>
+            </div>
+          </div>
+          <div class="panel transfer-composer">
+            <div class="panel-heading">
+              <h2>New transfer</h2>
+              <span>Evaluated when created</span>
+            </div>
+            <form id="transfer-form" class="form-body">
+              <div class="form-grid three">
+                <label
+                  >Initiator<select
+                    name="initiator_id"
+                    required
+                  ></select></label
+                ><label
+                  >From wallet<select name="wallet_id" required></select></label
+                ><label
+                  >To recipient<select name="recipient_id" required></select
+                ></label>
+              </div>
+              <div class="form-grid">
+                <label
+                  >Amount<input
+                    name="amount"
+                    inputmode="decimal"
+                    placeholder="0.00"
+                    required
+                    autocomplete="off"
+                /></label>
+                <div class="wallet-context">
+                  <span class="field-hint">Source wallet</span
+                  ><strong id="transfer-currency"></strong
+                  ><span class="field-hint" id="transfer-available"></span>
+                </div>
+              </div>
+              <div class="composer-bottom">
+                <label class="note-label"
+                  >Note <span class="optional">optional</span
+                  ><input
+                    name="note"
+                    maxlength="200"
+                    placeholder="What is this transfer for?" /></label
+                ><button class="button primary" type="submit">
+                  Create transfer <span>↗</span>
+                </button>
+              </div>
+              <p id="transfer-error" class="form-error" role="alert" hidden></p>
+            </form>
+          </div>
+          <div
+            id="latest-result"
+            class="result-banner"
+            aria-live="polite"
+            hidden
+          ></div>
+          <div class="panel history-panel">
+            <div class="panel-heading">
+              <h2>Transfer history <span id="history-count"></span></h2>
+              <span>Select a transfer to inspect its decision</span>
+            </div>
+            <div id="transfers-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <dialog
+      id="policy-dialog"
+      class="dialog policy-dialog"
+      aria-labelledby="policy-dialog-title"
+    >
+      <form id="policy-form">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">NEW RULE</span>
+            <h2 id="policy-dialog-title">Create policy</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button close-dialog"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <div class="dialog-content">
+          <label
+            >Policy name<input
+              name="name"
+              placeholder="e.g. Supplier payments"
+              maxlength="80"
+              required
+          /></label>
+          <div class="form-section-label">Conditions</div>
+          <label>Initiator<select name="initiator_id"></select></label>
+          <div class="form-grid">
+            <label
+              >Sender<select name="sender_type">
+                <option value="any">Any wallet</option>
+                <option value="wallet">Specific wallet</option>
+                <option value="wallet_group">Wallet group</option>
+              </select></label
+            ><label id="sender-id-label" hidden
+              >Wallet<select name="sender_id"></select
+            ></label>
+          </div>
+          <div class="form-grid">
+            <label
+              >Receiver<select name="receiver_type">
+                <option value="any">Any recipient</option>
+                <option value="recipient">Specific recipient</option>
+                <option value="recipient_group">Recipient group</option>
+              </select></label
+            ><label id="receiver-id-label" hidden
+              >Recipient<select name="receiver_id"></select
+            ></label>
+          </div>
+          <div class="form-grid amount-grid">
+            <label
+              >Amount less than<input
+                name="amount_limit"
+                inputmode="decimal"
+                placeholder="No restriction"
+                autocomplete="off" /></label
+            ><label
+              >Currency<select name="currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select></label
+            >
+          </div>
+          <p class="field-hint">
+            Inclusive upper bound for each transfer. Leave blank for any amount.
+          </p>
+          <div class="form-section-label">Action</div>
+          <div class="form-grid">
+            <label
+              >Decision<select name="action">
+                <option value="ALLOW">Allow</option>
+                <option value="REJECT">Reject</option>
+              </select></label
+            >
+          </div>
+          <p class="field-hint">
+            New policies are added at the bottom. Use the arrows to change their
+            priority.
+          </p>
+          <p id="policy-error" class="form-error" role="alert" hidden></p>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="button secondary close-dialog">
+            Cancel</button
+          ><button class="button primary" type="submit">Create policy</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      id="detail-dialog"
+      class="dialog detail-dialog"
+      aria-labelledby="detail-title"
+    >
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">TRANSFER DETAILS</span>
+          <h2 id="detail-title">Transfer</h2>
+        </div>
+        <button class="icon-button close-dialog" aria-label="Close">×</button>
+      </div>
+      <div id="detail-body" class="dialog-content"></div>
+    </dialog>
+    <dialog id="catalog-dialog" class="dialog" aria-labelledby="catalog-title">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">SIMULATION FIXTURES</span>
+          <h2 id="catalog-title">Demo data</h2>
+        </div>
+        <button class="icon-button close-dialog" aria-label="Close">×</button>
+      </div>
+      <div id="catalog-body" class="dialog-content"></div>
+    </dialog>
+    <dialog
+      id="confirm-dialog"
+      class="dialog confirm-dialog"
+      aria-labelledby="confirm-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="confirm-title">Confirm action</h2>
+      </div>
+      <div class="dialog-content">
+        <p id="confirm-text"></p>
+        <p id="confirm-error" class="form-error" role="alert" hidden></p>
+      </div>
+      <div class="dialog-footer">
+        <button class="button secondary close-dialog">Cancel</button
+        ><button class="button danger" id="confirm-action">Confirm</button>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+**
+!go.mod
+!main.go
+!TASK.md
+!internal/
+!internal/**
+!web/
+!web/**
