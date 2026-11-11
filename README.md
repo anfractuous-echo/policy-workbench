@@ -2,6 +2,8 @@
 
 A small payment-policy application for a product engineering interview. All names, recipients, balances and transfers are synthetic.
 
+The selected profile and section are kept in the page URL. Reloading the page or opening that URL in another tab restores the same profile and section.
+
 ## Run
 
 ### Docker

@@ -6,8 +6,16 @@ import { createTransfersView } from "./transfers.js";
 import { createWalletsView } from "./wallets.js";
 import { bindCatalogDialog } from "./catalog.js";
 let state;
-let profileId = "treasury";
-let currentView = "wallets";
+const viewNames = ["wallets", "policies", "transfers"];
+const initialLocation = new URLSearchParams(window.location.search);
+const initialProfile = initialLocation.get("profile");
+const initialView = initialLocation.get("view");
+let profileId = Array.from(query("#profile").options).some(
+  (option) => option.value === initialProfile,
+)
+  ? initialProfile
+  : "treasury";
+let currentView = viewNames.includes(initialView) ? initialView : "wallets";
 let refreshSequence = 0;
 const workspace = {
   getState: () => (workspaceReady() ? state : undefined),
@@ -24,7 +32,7 @@ function workspaceReady() {
 }
 function showView(view) {
   currentView = view;
-  for (const name of ["wallets", "policies", "transfers"]) {
+  for (const name of viewNames) {
     query(`#${name}-view`).hidden = !workspaceReady() || view !== name;
   }
   query("#breadcrumb-current").textContent = {
@@ -39,6 +47,13 @@ function showView(view) {
       button.dataset.view === view ? "page" : "false",
     );
   });
+  if (workspaceReady()) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("profile", profileId);
+    url.searchParams.set("view", currentView);
+    if (url.href !== window.location.href)
+      window.history.replaceState(null, "", url);
+  }
 }
 async function refreshWorkspace() {
   const sequence = ++refreshSequence,
