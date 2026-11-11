@@ -44,7 +44,7 @@ Storage supports one process per file. Atomic file replacement protects against 
 
 ## Task
 
-Read [TASK.md](TASK.md), also available through **Interview brief** in the application. It describes the current product, two examples using the seeded policies, and the customer request. Clarify the new feature with the interviewer. The period feature is not implemented in this starter.
+Read [TASK.md](TASK.md), also available through **Interview brief** in the application. The brief is a formatted page with diagrams of the existing rules; its text comes from TASK.md. The original Markdown remains available at `/brief.md`. It describes the current product, two examples using the seeded policies, and the customer request. Clarify the new feature with the interviewer. The period feature is not implemented in this starter.
 
 ## Wallets and balances
 

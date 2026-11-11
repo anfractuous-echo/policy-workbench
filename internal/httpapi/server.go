@@ -25,6 +25,9 @@ func NewHandler(service *application.Service, assets fs.FS, brief []byte) http.H
 	mux.HandleFunc("POST /api/clock", handler.advanceClock)
 	mux.HandleFunc("POST /api/reset", handler.resetWorkspace)
 	mux.HandleFunc("GET /brief", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFileFS(w, r, assets, "brief.html")
+	})
+	mux.HandleFunc("GET /brief.md", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		_, _ = w.Write(brief)
 	})

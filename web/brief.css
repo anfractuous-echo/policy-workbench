@@ -1,0 +1,468 @@
+:root {
+  color-scheme: light;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #23362e;
+  background: #f7f8f4;
+  font-size: 14px;
+  line-height: 1.7;
+  --muted: #718077;
+  --line: #e1e7dc;
+  --green: #244c3e;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: var(--green);
+  text-underline-offset: 4px;
+}
+a:hover {
+  color: #4d7154;
+}
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #72906a;
+  outline-offset: 5px;
+}
+[hidden] {
+  display: none !important;
+}
+.brief-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 19px max(24px, calc((100vw - 1180px) / 2));
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+.brief-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #23362e;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brief-brand img {
+  width: 28px;
+  height: 28px;
+}
+.brief-brand strong {
+  font-weight: 650;
+}
+.brief-topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 12px;
+}
+.brief-topbar nav a {
+  text-decoration: none;
+}
+.workspace-link {
+  padding: 8px 13px;
+  border: 1px solid #cdd9c8;
+  border-radius: 7px;
+  background: #f2f6ed;
+}
+.brief-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 58px 24px 24px;
+}
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 1.7px;
+  color: #7b8d6f;
+}
+.brief-hero {
+  max-width: 850px;
+  margin-bottom: 42px;
+}
+h1 {
+  font-size: clamp(31px, 4.3vw, 46px);
+  line-height: 1.16;
+  letter-spacing: -1.7px;
+  font-weight: 650;
+  margin: 0 0 20px;
+}
+.brief-intro {
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 22px;
+}
+.brief-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.brief-tags span {
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #6b7c60;
+  border: 1px solid #dce5d1;
+  border-radius: 5px;
+  background: #f0f4e9;
+}
+.brief-layout {
+  display: grid;
+  grid-template-columns: 188px minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+.brief-toc {
+  position: sticky;
+  top: 28px;
+  padding-top: 16px;
+}
+.brief-toc nav {
+  display: grid;
+  gap: 5px;
+}
+.brief-toc a {
+  display: block;
+  font-size: 12px;
+  line-height: 1.55;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+}
+.brief-toc a:hover {
+  border-left-color: #719168;
+  color: var(--green);
+  background: #edf2e8;
+}
+#brief-content {
+  min-width: 0;
+}
+.brief-section {
+  scroll-margin-top: 24px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px 30px;
+  margin-bottom: 20px;
+}
+h2 {
+  font-size: 21px;
+  line-height: 1.35;
+  letter-spacing: -0.4px;
+  margin: 0 0 20px;
+  font-weight: 620;
+}
+h3 {
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+p {
+  margin: 0 0 16px;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+strong {
+  font-weight: 620;
+}
+ul,
+ol {
+  padding-left: 22px;
+  margin: 16px 0 20px;
+}
+li {
+  padding-left: 3px;
+  margin: 9px 0;
+}
+li::marker {
+  color: #81956e;
+  font-weight: 600;
+}
+code {
+  padding: 2px 5px;
+  background: #f1f4ed;
+  border-radius: 4px;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+.brief-table {
+  overflow-x: auto;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 22px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.55;
+}
+th {
+  padding: 12px;
+  background: #f4f6ef;
+  color: #6b7b62;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+td {
+  padding: 13px 12px;
+  border-top: 1px solid #e9eee4;
+  vertical-align: top;
+  min-width: 88px;
+}
+th:first-child,
+td:first-child {
+  min-width: 48px;
+}
+.brief-table tr:nth-child(even) td {
+  background: #fcfdf9;
+}
+.decision-example,
+.rejection-example {
+  margin: 0 0 25px;
+  padding: 20px;
+  border-radius: 9px;
+  background: #f7f9f3;
+  border: 1px solid #dce6d2;
+}
+.decision-example figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+.decision-example .eyebrow,
+.rejection-example .eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9px;
+}
+.decision-example figcaption p {
+  font-size: 11px;
+  margin: 5px 0 0;
+  color: var(--muted);
+}
+.verdict {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  font-weight: 700;
+  border-radius: 5px;
+  padding: 5px 9px;
+  white-space: nowrap;
+}
+.allow {
+  color: #2f633e;
+  background: #e6f0df;
+  border: 1px solid #c7dabb;
+}
+.reject {
+  color: #9b4b42;
+  background: #faeee9;
+  border: 1px solid #edd1c8;
+}
+.decision-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 0;
+  margin: 20px 0 0;
+  list-style: none;
+}
+.decision-flow li {
+  position: relative;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #dfe5d8;
+  background: #fff;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+}
+.decision-flow li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -18px;
+  top: 43%;
+  color: #99a88a;
+  font-size: 17px;
+}
+.flow-step {
+  font-size: 8px;
+  font-weight: 650;
+  letter-spacing: 0.8px;
+  color: #8b9880;
+  margin-bottom: 9px;
+}
+.decision-flow h4 {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0 0 8px;
+  font-weight: 620;
+}
+.decision-flow p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #7a8672;
+  margin: 0 0 14px;
+}
+.flow-result {
+  margin-top: auto;
+  padding-top: 9px;
+  border-top: 1px solid #edf0e7;
+  font-size: 10px;
+  color: #8c9782;
+}
+.decision-flow .flow-match {
+  background: #edf5e7;
+  border-color: #b9d0a9;
+}
+.flow-match .flow-step,
+.flow-match .flow-result {
+  color: #457343;
+}
+.flow-match .flow-result {
+  border-color: #d4e4c6;
+  font-weight: 650;
+}
+.flow-note {
+  margin: 15px 0 0;
+  font-size: 11px;
+  line-height: 1.65;
+  color: #6c7f60;
+}
+.rejection-example {
+  border-color: #eedfd5;
+  background: #fdf9f5;
+}
+.rejection-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 15px;
+}
+.rejection-stop {
+  font-size: 11px;
+  color: #8f776b;
+}
+.brief-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0 0;
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: #829078;
+}
+@media (max-width: 900px) {
+  .brief-layout {
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .brief-section {
+    padding: 24px;
+  }
+  .decision-flow {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .decision-flow li:not(:last-child)::after {
+    content: "↓";
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -23px;
+  }
+}
+@media (max-width: 640px) {
+  .brief-topbar {
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .brief-topbar nav {
+    gap: 15px;
+    font-size: 11px;
+  }
+  .brief-brand {
+    font-size: 12px;
+  }
+  .brief-brand img {
+    width: 23px;
+    height: 23px;
+  }
+  .brief-shell {
+    padding: 34px 18px 20px;
+  }
+  .brief-hero {
+    margin-bottom: 27px;
+  }
+  h1 {
+    letter-spacing: -0.9px;
+  }
+  .brief-intro {
+    font-size: 14px;
+  }
+  .brief-layout {
+    display: block;
+  }
+  .brief-toc {
+    position: static;
+    padding: 0 0 22px;
+  }
+  .brief-toc nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 10px;
+  }
+  .brief-toc a {
+    font-size: 11px;
+    padding: 6px 9px;
+  }
+  .brief-section {
+    padding: 22px 18px;
+  }
+  h2 {
+    font-size: 19px;
+  }
+  .decision-example,
+  .rejection-example {
+    padding: 15px;
+  }
+  .decision-example figcaption {
+    flex-direction: column;
+    gap: 10px;
+  }
+  td {
+    min-width: 100px;
+  }
+  .brief-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

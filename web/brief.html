@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Interview brief · Policy Workbench</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/brief.css" />
+    <script type="module" src="/brief.js"></script>
+  </head>
+  <body>
+    <header class="brief-topbar">
+      <a class="brief-brand" href="/" aria-label="Policy Workbench"
+        ><img src="/mark.svg" alt="" /><span
+          >policy <strong>workbench</strong></span
+        ></a
+      >
+      <nav aria-label="Brief actions">
+        <a href="/brief.md" target="_blank" rel="noopener">View Markdown ↗</a
+        ><a class="workspace-link" href="/">Open workspace ↗</a>
+      </nav>
+    </header>
+    <div class="brief-shell">
+      <header class="brief-hero">
+        <p class="eyebrow">PRODUCT ENGINEERING EXERCISE</p>
+        <h1 id="brief-title">Interview brief</h1>
+        <p class="brief-intro">
+          Explore the current product, then work with your interviewer on the
+          next feature.
+        </p>
+        <div class="brief-tags">
+          <span>USD &amp; EUR</span><span>Local simulation</span
+          ><span>Synthetic funds</span>
+        </div>
+      </header>
+      <div class="brief-layout">
+        <aside class="brief-toc">
+          <p class="eyebrow">IN THIS BRIEF</p>
+          <nav id="brief-contents" aria-label="On this page"></nav>
+        </aside>
+        <main id="brief-content" aria-labelledby="brief-title">
+          <p id="brief-loading" role="status">Loading interview brief…</p>
+          <p id="brief-error" role="alert" hidden>
+            Could not load the brief. Reload this page or
+            <a href="/brief.md">read the Markdown version</a>.
+          </p>
+          <noscript
+            ><p><a href="/brief.md">Read the interview brief</a>.</p></noscript
+          >
+        </main>
+      </div>
+      <footer class="brief-footer">
+        Policy Workbench <span>All examples describe the starter system.</span>
+      </footer>
+    </div>
+    <template id="allow-flow">
+      <figure class="decision-example" aria-labelledby="allow-flow-title">
+        <figcaption>
+          <div>
+            <span class="eyebrow">FOLLOW ONE PAYMENT</span>
+            <h3 id="allow-flow-title">12,000 USD to Supplier</h3>
+            <p>Operations wallet · Starter policies, checked in order</p>
+          </div>
+          <span class="verdict allow">ALLOW</span>
+        </figcaption>
+        <ol class="decision-flow">
+          <li>
+            <span class="flow-step">01 · CONTINUE</span>
+            <h4>Restricted USD recipients</h4>
+            <p>Supplier is not in the restricted group.</p>
+            <span class="flow-result">Does not match</span>
+          </li>
+          <li>
+            <span class="flow-step">02 · CONTINUE</span>
+            <h4>Operations payments</h4>
+            <p>12,000 is above this rule’s 10,000 maximum.</p>
+            <span class="flow-result">Does not match</span>
+          </li>
+          <li class="flow-match">
+            <span class="flow-step">03 · STOP</span>
+            <h4>Treasury fallback</h4>
+            <p>This rule allows any USD amount.</p>
+            <span class="flow-result">Matches → ALLOW</span>
+          </li>
+        </ol>
+        <p class="flow-note">
+          An amount above one rule’s maximum moves to the next rule. The first
+          complete match decides the result.
+        </p>
+      </figure>
+    </template>
+    <template id="reject-flow">
+      <figure class="rejection-example" aria-labelledby="reject-flow-title">
+        <figcaption>
+          <span class="eyebrow">FIRST RULE MATCHES</span>
+          <h3 id="reject-flow-title">250 USD to Restricted recipient</h3>
+        </figcaption>
+        <div class="rejection-path">
+          <span>Restricted USD recipients</span><span aria-hidden="true">→</span
+          ><span class="verdict reject">REJECT</span
+          ><span class="rejection-stop"
+            >Stop here. Later ALLOW rules are not checked.</span
+          >
+        </div>
+      </figure>
+    </template>
+  </body>
+</html>

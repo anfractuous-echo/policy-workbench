@@ -43,4 +43,6 @@ Policy snapshots, traces and nested condition arrays are copied at ownership bou
 
 During a profile switch, old views remain hidden until the selected profile's state is loaded. Sequence checks ignore stale responses. An action response updates a detail dialog only if it still belongs to the selected transfer.
 
+The standalone brief page (`brief.html`, `brief.css`, `brief.js`) reads TASK.md through `/brief.md`, renders its headings, lists and tables, and illustrates the existing ALLOW/REJECT examples. Text is rendered through DOM text nodes rather than arbitrary HTML.
+
 ES modules are served directly, without bundling or dependency installation. Root HTTP integration tests exercise the real composition, including embedded assets. All candidate tests run with `go test -race ./...`.

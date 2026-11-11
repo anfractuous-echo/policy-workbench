@@ -72,7 +72,7 @@ func sampleTransfer() domain.TransferRequest {
 
 func TestHTTPCreateSignPersistAndClock(t *testing.T) {
 	server, _, repository := testServer(t)
-	for _, path := range []string{"/", "/app.js", "/api.js", "/policies.js", "/transfers.js", "/presentation.js", "/ui.js", "/catalog.js", "/wallets.js", "/style.css", "/mark.svg", "/brief"} {
+	for _, path := range []string{"/", "/app.js", "/api.js", "/policies.js", "/transfers.js", "/presentation.js", "/ui.js", "/catalog.js", "/wallets.js", "/style.css", "/mark.svg", "/brief", "/brief.md", "/brief.js", "/brief.css"} {
 		if len(apiRequest(t, server, "GET", path, nil, 200)) == 0 {
 			t.Fatal("empty embedded asset", path)
 		}
@@ -174,5 +174,31 @@ func TestHTTPTransferCurrencyIsServerOwned(t *testing.T) {
 	}
 	if transfer.Currency != domain.CurrencyUSD {
 		t.Fatal("wrong wallet currency", transfer.Currency)
+	}
+}
+
+func TestInterviewBriefHasHTMLAndOriginalMarkdown(t *testing.T) {
+	server, _, _ := testServer(t)
+	response, err := server.Client().Get(server.URL + "/brief")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer response.Body.Close()
+	if response.StatusCode != http.StatusOK || response.Header.Get("Content-Type") != "text/html; charset=utf-8" {
+		t.Fatal("brief is not an HTML page", response.StatusCode, response.Header)
+	}
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Contains(data, []byte(`id="allow-flow"`)) {
+		t.Fatal("ALLOW example missing")
+	}
+	original, err := embeddedFiles.ReadFile("TASK.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if raw := apiRequest(t, server, "GET", "/brief.md", nil, 200); !bytes.Equal(raw, original) {
+		t.Fatal("Markdown source differs from TASK.md")
 	}
 }
